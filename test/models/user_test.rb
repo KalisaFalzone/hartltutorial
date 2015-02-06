@@ -17,7 +17,7 @@ test "email should not be too long" do
 end
 
 test "email validation should accept valid addresses" do
-    valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org
+    valid_addresses = %w[foo@bar.com user@example.com USER@foo.COM A_US-ER@foo.bar.org
     first.last@foo.jp alice+bob@baz.cn]
     valid_addresses.each do |valid_address|
         @user.email = valid_address
@@ -44,5 +44,12 @@ test "email validation should reject invalid addresses" do
   test "password should have a minimum length" do
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
+  end
+
+  test "email should be saved in database in lowercase" do
+      mixed_case_email = "Foo@ExAMPle.CoM"
+      @user.email = mixed_case_email
+      @user.save
+      assert_equal @user.email, @user.email.downcase
   end
 end
