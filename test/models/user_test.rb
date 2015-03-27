@@ -52,4 +52,8 @@ test "email validation should reject invalid addresses" do
       @user.save
       assert_equal @user.email, @user.email.downcase
   end
+
+  test "authenticated? should return false for a user with nil digest" do
+    assert_not @user.authenticated?(:remember, '')
+  end
 end
